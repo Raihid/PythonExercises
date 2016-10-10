@@ -2,6 +2,6 @@
 import math
 
 print("Hello world!")
-print("10+12=" + 10+12)
-print("Sin(pi): " + math.sin(math.pi))
+print("10+12=" + str(10+12))
+print("Sin(pi): " + str(math.sin(math.pi)))
 
