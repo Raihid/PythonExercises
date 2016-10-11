@@ -16,10 +16,11 @@ print("_".join("BladeRunner"))
 
 # Exercise 2.12
 first_chars = "".join(w[0] for w in wordlist)
-last_chars = "".join(w[-1] for w in wordlist)
-
 print(first_chars)
+
+last_chars = "".join(w[-1] for w in wordlist)
 print(last_chars)
+
 
 # Exercise 2.13
 sum_length = sum(len(w) for w in wordlist)
@@ -40,7 +41,7 @@ print(newline.replace("GvR", "Guido van Rossum"))
 # Exercise 2.17
 wordlist = line.split()
 # Alfabetical order
-wordlist.sort()
+wordlist.sort(cmp=lambda x,y: cmp(x.lower(), y.lower()))
 print(wordlist)
 # Sorted by word length
 wordlist.sort(key=lambda w: len(w), reverse=True)
