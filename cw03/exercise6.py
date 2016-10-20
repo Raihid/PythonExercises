@@ -1,7 +1,7 @@
 dim = { "w" : 4, "h" : 2 }  # size of a single square/rectangle
-num_sq = { "line": 6, "row": 2 } # num of squares in row
+num_sq = { "row": 3, "column": 5 } # num of columns and row
 
-width = dim["w"] * num_sq["line"];
+width = dim["w"] * num_sq["column"];
 height = dim["h"] * num_sq["row"];
 
 rectangle = "";

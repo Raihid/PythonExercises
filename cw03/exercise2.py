@@ -29,5 +29,3 @@ X = "abc"
 # Brakuje nam jeszcze jednego argumentu, jako ze pow przyjmuje dwa
 # Poprawione przykladowo:
 print(map(pow, range(8), range(8)))
-
-
