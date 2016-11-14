@@ -4,6 +4,7 @@ if (x > y):
     result = x;
 else:
     result = y;
+print(result)
 # Kod jest poprawny
 
 

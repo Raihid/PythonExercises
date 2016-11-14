@@ -7,5 +7,5 @@ def sum_seq(item):
             return 0
     return sum(sum_seq(s) for s in item)
 
-L = [(2, (2.5, 5.0))]
+L = [5, 7, (2, [2.5, 5.0])]
 print(sum_seq(L))
