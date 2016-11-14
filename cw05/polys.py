@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import itertools
 
 def add_poly(poly1, poly2):        # poly1(x) + poly2(x)

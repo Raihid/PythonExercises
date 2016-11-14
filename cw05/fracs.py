@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from fractions import gcd
 
 def same_denom(frac1, frac2): 
