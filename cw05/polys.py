@@ -1,4 +1,3 @@
-#!/usr/bin/python
 import itertools
 
 def add_poly(poly1, poly2):        # poly1(x) + poly2(x)
@@ -65,6 +64,13 @@ def diff_poly(poly):               # pochodna wielomianu
         poly.pop()
     return poly
 
+p1 = [2, 1]                   # W(x) = 2 + x
+p2 = [-3, 0, 1]               # W(x) = -3 + x**2
+p3 = [3]                      # W(x) = 3, wielomian zerowego stopnia
+p4 = [0]                      # zero
+p5 = [0, 0, 0]                # zero (nie
+p6 = [1,2,3]
+p7 = [4,5,6]
 
 
 import unittest
@@ -111,8 +117,8 @@ class TestPolynomials(unittest.TestCase):
         self.assertEqual(eval_poly(self.p2, 2), 1)
 
     def test_combine_poly(self):
-        self.assertEqual(combine_poly(self.p6, self.p7), [57, 130, 231, 180, 108])
-        self.assertEqual(combine_poly(self.p7, self.p4), [4])
+        self.assertEqual(combine_poly(self.p6, p7), [57, 130, 231, 180, 108])
+        self.assertEqual(combine_poly(self.p7, p4), [4])
 
     def test_pow_poly(self):
         self.assertEqual(pow_poly(self.p4, 2), [0])

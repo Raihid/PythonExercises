@@ -1,7 +1,7 @@
-#!/usr/bin/python
 from fractions import gcd
 
 def same_denom(frac1, frac2): 
+    print(frac1, frac2)
     denom = abs(frac1[1]*frac2[1])/gcd(frac1[1], frac2[1])
     fracs = [frac1, frac2]
     for i,f in enumerate(fracs):
@@ -47,6 +47,12 @@ def cmp_frac(frac1, frac2):         # -1 | 0 | +1
 
 def frac2float(frac):               # konwersja do float
     return float(frac[0])/float(frac[1])
+
+f1 = [-1, 2]                  # -1/2
+f2 = [0, 1]                   # zero
+f3 = [3, 1]                   # 3
+f4 = [6, 2]                   # 3 (niejednoznaczno)
+f5 = [0, 2]                   # zero (niejednoznaczno)
 
 import unittest
 
