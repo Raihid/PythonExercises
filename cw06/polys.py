@@ -1,107 +1,130 @@
-
-
 #!/usr/bin/python
 import itertools
 
 class Poly:
-def __init__(self, c=0, n=0)
-    self.size = n +1
-    self.a = self.size * [0]
-    self.a[self.size-1] = c
-
-def add_poly(poly1, poly2):        # poly1(x) + poly2(x)
-    return [x+y for x,y in 
-            itertools.izip_longest(poly1, poly2, fillvalue=0)]
-
-def sub_poly(poly1, poly2):        # poly1(x) - poly2(x)
-    return [x-y for x,y in
-            itertools.izip_longest(poly1, poly2, fillvalue=0)]
-
-def mul_poly(poly1, poly2):        # poly1(x) * poly2(x)
-    out_poly = [0] * (len(poly1)+len(poly2))
-    for i in range(0, len(poly1)):
-        for j in range(0, len(poly2)):
-            out_poly[i+j] = out_poly[i+j] + poly1[i] * poly2[j]
-    while len(out_poly) > 1 and out_poly[-1] == 0:
-        out_poly.pop()
-    return out_poly;
-        
-
-def is_zero(poly):                 # bool, [0], [0,0], itp.
-    return all(k == 0 for k in poly)
-
-def cmp_poly(poly1, poly2):        # bool, porownywanie
-    while len(poly1) > 1 and poly1[-1] == 0:
-       poly1.pop() 
-    while len(poly2) > 1 and poly2[-1] == 0:
-       poly2.pop() 
-    if(len(poly1) != len(poly2)):
-        return false
-    for i in range(0, len(poly1)):
-        if poly1[i] != poly2[i]:
+    def __init__(self, c=0, n=0):
+        self.size = n +1
+        self.a = self.size * [0]
+        self.a[self.size-1] = c
+    
+    @staticmethod
+    def from_list(L):
+        tmp = Poly()
+        tmp.a = L
+        while len(tmp.a) > 1 and tmp.a[-1] == 0:
+            tmp.a.pop()
+        tmp.size = len(tmp.a)
+        return tmp
+    
+    def add_list(self, L1, L2):        # L1(x) + L2(x)
+        return [x+y for x,y in 
+                itertools.izip_longest(L1, L2, fillvalue=0)]
+    
+    def sub_list(self, L1, L2):        # L1(x) - L2(x)
+        return [x-y for x,y in
+                itertools.izip_longest(L1, L2, fillvalue=0)]
+    
+    def mul_list(self, L1, L2):        # L1(x) * L2(x)
+        out_list = [0] * (len(L1)+len(L2))
+        for i in range(0, len(L1)):
+            for j in range(0, len(L2)):
+                out_list[i+j] = out_list[i+j] + (L1[i] * L2[j])
+        while len(out_list) > 1 and out_list[-1] == 0:
+            out_list.pop()
+        return out_list;
+            
+    
+    
+    def cmp_list(self, L1, L2):        # bool, porownywanie
+        while len(L1) > 1 and L1[-1] == 0:
+           L1.pop() 
+        while len(L2) > 1 and L2[-1] == 0:
+           L2.pop() 
+        if(len(L1) != len(L2)):
             return False
-    return True
+        return all(x == y for x,y in zip(L1,L2))
+    
+    def eval_list(self, L, x0):           # L(x0), algorytm Hornera
+        result = L[-1]
+        for i in reversed(range(0, len(L)-1)):
+            result = result*x0 + L[i]
+        return result
+    
+    def combine_list(self, L1, L2):    # L1(L2(x)), trudne!
+        out_list = [0] * len(L1) * len(L2)
+        for i in range(0, len(L1)):
+            temp = self.pow_list(L2, i)
+            temp = self.mul_list([L1[i]], temp)
+            out_list = self.add_list(out_list, temp)
+        while len(out_list) > 1 and out_list[-1] == 0:
+            out_list.pop()
+        return out_list
+    
+    def pow_list(self, L, n):             # L(x) ** n
+        result = [1]
+        for i in range(0, n):
+            result = self.mul_list(result, L)
+        return result
+    
+    def diff_list(self, L):               # pochodna wielomianu
+        L[0] = 0
+        for i in range(1, len(L)):
+            L[i-1] = L[i]*i
+            L[i] = 0 
+        while len(L) > 1 and L[-1] == 0:
+            L.pop()
+        return L
+    
+    def integrate_list(self, L):
+        size = len(L)
+        out_list = [0] * size+1
+        for i in reversed(range(0,len(L))):
+            out_list[i+1] = L[i]/(i+1)
+        while len(out_list) > 1 and out_list[-1] == 0:
+            out_list.pop()
+        return out_list
 
-def eval_poly(poly, x0):           # poly(x0), algorytm Hornera
-    result = poly[-1]
-    for i in reversed(range(0, len(poly)-1)):
-        result = result*x0 + poly[i]
-    return result
+    def __str__(self):
+        return str(self.a)
 
-def combine_poly(poly1, poly2):    # poly1(poly2(x)), trudne!
-    out_poly = [0] * len(poly1) * len(poly2)
-    for i in range(0, len(poly1)):
-        temp = pow_poly(poly2, i)
-        temp = mul_poly([poly1[i]], temp)
-        out_poly = add_poly(out_poly, temp)
-    while len(out_poly) > 1 and out_poly[-1] == 0:
-        out_poly.pop()
-    return out_poly
+    def __add__(self, other): # self + other
+        return Poly.from_list(self.add_list(self.a, other.a))
 
-def pow_poly(poly, n):             # poly(x) ** n
-    result = [1]
-    for i in range(0, n):
-        result = mul_poly(result, poly)
-    return result
+    def __sub__(self, other):  # self - other
+        return Poly.from_list(self.sub_list(self.a, other.a))
 
-def diff_poly(poly):               # pochodna wielomianu
-    poly[0] = 0
-    for i in range(1, len(poly)):
-        poly[i-1] = poly[i]*i
-        poly[i] = 0 
-    while len(poly) > 1 and poly[-1] == 0:
-        poly.pop()
-    return poly
+    def __mul__(self, other):  # self * other
+        return Poly.from_list(self.mul_list(self.a, other.a))
 
-def __str__(self):
-    return str(self.a)
+    def __pos__(self):         # +poly1 = (+1)*poly1
+        return self
 
-def __add__(self, other): pass  # poly1 + poly2
+    def __neg__(self):         # -poly1 = (-1)*poly1
+        return Poly.from_list([-e for e in self.a])
 
-def __sub__(self, other): pass  # poly1 - poly2
+    def __eq__(self, other):   # poly1 == poly2
+        return self.cmp_list(self.a, other.a)
 
-def __mul__(self, other): pass  # poly1 * poly2
+    def __ne__(self, other):        # poly1 != poly2
+        return not self == other
 
-def __pos__(self): pass         # +poly1 = (+1)*poly1
+    def eval(self, x):         # schemat Hornera
+        return self.eval_list(self.a, x)
 
-def __neg__(self): pass         # -poly1 = (-1)*poly1
+    def combine(self, other):       # poly1(poly2(x))
+        return Poly.from_list(self.combine_list(self.a, other.a))
 
-def __eq__(self, other): pass   # obsługa poly1 == poly2
+    def __pow__(self, n):      # poly(x)**n or pow(poly(x),n)
+        return Poly.from_list(self.pow_list(self.a, n))
 
-def __ne__(self, other):        # obsługa poly1 != poly2
-    return not self == other
+    def diff(self):            # differential
+        return Poly.from_list(self.diff_list(self.a))
 
-def eval(self, x): pass         # schemat Hornera
-
-def combine(self, other):       # złożenie poly1(poly2(x))
-
-def __pow__(self, n): pass      # poly(x)**n lub pow(poly(x),n)
-
-def diff(self): pass            # różniczkowanie
-
-def integrate(self): pass       # całkowanie
-
-def is_zero(self): pass         # bool, True dla [0], [0, 0],...   
+    def integrate(self):       # integral
+        return Poly.from_list(self.integrate_list(self.a))
+        
+    def is_zero(self):         # bool, True for [0], [0, 0],...   
+        return all(k == 0 for k in self.a)
 
 p1 = [2, 1]                   # W(x) = 2 + x
 p2 = [-3, 0, 1]               # W(x) = -3 + x**2
@@ -117,55 +140,55 @@ import unittest
 class TestPolynomials(unittest.TestCase):
 
     def setUp(self):
-        self.p1 = [2, 1]                   # W(x) = 2 + x
-        self.p2 = [-3, 0, 1]               # W(x) = -3 + x**2
-        self.p3 = [3]                      # W(x) = 3, wielomian zerowego stopnia
-        self.p4 = [0]                      # zero
-        self.p5 = [0, 0, 0]                # zero (nie
-        self.p6 = [1,2,3]
-        self.p7 = [4,5,6]
+        self.p1 = Poly.from_list([2, 1])                   # W(x) = 2 + x
+        self.p2 = Poly.from_list([-3, 0, 1])               # W(x) = -3 + x**2
+        self.p3 = Poly.from_list([3])                      # W(x) = 3, wielomian zerowego stopnia
+        self.p4 = Poly.from_list([0])                      # zero
+        self.p5 = Poly.from_list([0, 0, 0])                # zero (nie
+        self.p6 = Poly.from_list([1,2,3])
+        self.p7 = Poly.from_list([4,5,6])
 
-    def test_add_poly(self):
-        self.assertEqual(add_poly(self.p1, self.p2), [-1, 1, 1])
-        self.assertEqual(add_poly(self.p3, self.p4), [3])
-        self.assertEqual(add_poly(self.p6, self.p7), [5, 7, 9])
+    def test_add(self):
+        self.assertEqual(self.p1 + self.p2, Poly.from_list([-1, 1, 1]))
+        self.assertEqual(self.p3 + self.p4, Poly.from_list([3]))
+        self.assertEqual(self.p6 + self.p7, Poly.from_list([5, 7, 9]))
 
-    def test_sub_poly(self):
-        self.assertEqual(sub_poly(self.p1, self.p2), [5, 1, -1])
-        self.assertEqual(sub_poly(self.p3, self.p4), [3])
-        self.assertEqual(sub_poly(self.p6, self.p7), [-3, -3, -3])
+    def test_sub(self):
+        self.assertEqual(self.p1 - self.p2, Poly.from_list([5, 1, -1]))
+        self.assertEqual(self.p3 - self.p4, Poly.from_list([3]))
+        self.assertEqual(self.p6 - self.p7, Poly.from_list([-3, -3, -3]))
 
-    def test_mul_poly(self):
-        self.assertEqual(mul_poly(self.p7, self.p7), [16, 40, 73, 60, 36])
-        self.assertEqual(mul_poly(self.p1, self.p2), [-6, -3, 2, 1])
-        self.assertEqual(mul_poly(self.p3, self.p4), [0])
+    def test_mul(self):
+        self.assertEqual(self.p7 * self.p7, Poly.from_list([16, 40, 73, 60, 36]))
+        self.assertEqual(self.p1 * self.p2, Poly.from_list([-6, -3, 2, 1]))
+        self.assertEqual(self.p3 * self.p4, Poly.from_list([0]))
 
     def test_is_zero(self):
-        self.assertTrue(is_zero(self.p4))
-        self.assertTrue(is_zero(self.p5))
-        self.assertFalse(is_zero(self.p6))
-
-    def test_cmp_poly(self):
-        self.assertTrue(cmp_poly(self.p4, self.p4))
-        self.assertTrue(cmp_poly(self.p4, self.p5))
-        self.assertFalse(cmp_poly(self.p2, self.p7))
+        self.assertTrue(self.p4.is_zero())
+        self.assertTrue(self.p5.is_zero())
+        self.assertFalse(self.p6.is_zero())
+   
+    def test_cmp(self):
+        self.assertTrue(self.p4 == self.p4)
+        self.assertTrue(self.p4 == self.p5)
+        self.assertFalse(self.p2 == self.p7)
         
-    def test_eval_poly(self):
-        self.assertEqual(eval_poly(self.p4, 10), 0)
-        self.assertEqual(eval_poly(self.p7, 0), 4)
-        self.assertEqual(eval_poly(self.p2, 2), 1)
+    def test_eval(self):
+        self.assertEqual(Poly.eval(self.p4, 10), 0)
+        self.assertEqual(Poly.eval(self.p7, 0), 4)
+        self.assertEqual(Poly.eval(self.p2, 2), 1)
 
-    def test_combine_poly(self):
-        self.assertEqual(combine_poly(self.p6, p7), [57, 130, 231, 180, 108])
-        self.assertEqual(combine_poly(self.p7, p4), [4])
+    def test_combine(self):
+        self.assertEqual(Poly.combine(self.p6, self.p7), Poly.from_list([57, 130, 231, 180, 108]))
+        self.assertEqual(Poly.combine(self.p7, self.p4), Poly.from_list([4]))
 
-    def test_pow_poly(self):
-        self.assertEqual(pow_poly(self.p4, 2), [0])
-        self.assertEqual(pow_poly(self.p7, 2), [16, 40, 73, 60, 36])
+    def test_pow(self):
+        self.assertEqual(self.p4 ** 2, Poly.from_list([0]))
+        self.assertEqual(self.p7 ** 2, Poly.from_list([16, 40, 73, 60, 36]))
 
-    def test_diff_poly(self):
-        self.assertEqual(diff_poly(self.p7), [5, 12])
-        self.assertEqual(diff_poly(self.p1), [1])
+    def test_diff(self):
+        self.assertEqual(Poly.diff(self.p7), Poly.from_list([5, 12]))
+        self.assertEqual(Poly.diff(self.p1), Poly.from_list([1]))
 
     def tearDown(self): pass
 
