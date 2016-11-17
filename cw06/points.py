@@ -26,7 +26,7 @@ class Point:
         return Point(self.x - other.x, self.y - other.y)
 
     def __mul__(self, other):  
-        return self.x*other.x + self.y*other.y
+        return self.x * other.x + self.y * other.y
 
     def cross(self, other):         
         return self.x * other.y - self.y * other.x

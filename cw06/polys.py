@@ -33,9 +33,7 @@ class Poly:
             out_list.pop()
         return out_list;
             
-    
-    
-    def cmp_list(self, L1, L2):        # bool, porownywanie
+    def cmp_list(self, L1, L2):        # bool, compare
         while len(L1) > 1 and L1[-1] == 0:
            L1.pop() 
         while len(L2) > 1 and L2[-1] == 0:
@@ -44,13 +42,13 @@ class Poly:
             return False
         return all(x == y for x,y in zip(L1,L2))
     
-    def eval_list(self, L, x0):           # L(x0), algorytm Hornera
+    def eval_list(self, L, x0):           # L(x0), Horner
         result = L[-1]
         for i in reversed(range(0, len(L)-1)):
             result = result*x0 + L[i]
         return result
     
-    def combine_list(self, L1, L2):    # L1(L2(x)), trudne!
+    def combine_list(self, L1, L2):    # L1(L2(x)), hard!
         out_list = [0] * len(L1) * len(L2)
         for i in range(0, len(L1)):
             temp = self.pow_list(L2, i)
@@ -66,7 +64,7 @@ class Poly:
             result = self.mul_list(result, L)
         return result
     
-    def diff_list(self, L):               # pochodna wielomianu
+    def diff_list(self, L):               # derivative of polynomial
         L[0] = 0
         for i in range(1, len(L)):
             L[i-1] = L[i]*i
@@ -130,7 +128,7 @@ p1 = [2, 1]                   # W(x) = 2 + x
 p2 = [-3, 0, 1]               # W(x) = -3 + x**2
 p3 = [3]                      # W(x) = 3, wielomian zerowego stopnia
 p4 = [0]                      # zero
-p5 = [0, 0, 0]                # zero (nie
+p5 = [0, 0, 0]                # zero
 p6 = [1,2,3]
 p7 = [4,5,6]
 

@@ -35,9 +35,6 @@ class Rectangle:
         self.pt1 += Point(x, y)
         self.pt2 += Point(x, y)
 
-
-
-
 class TestRectangle(unittest.TestCase): 
 
     def setUp(self):
