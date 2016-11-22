@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import unittest
 from math import sqrt
 class Point:

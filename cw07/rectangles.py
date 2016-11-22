@@ -1,3 +1,4 @@
+#!/usr/bin/python
 from points import Point
 import unittest
 
@@ -9,30 +10,34 @@ class Rectangle:
     """
 
     def __init__(self, x1=0, y1=0, x2=0, y2=0):
+        #if not (isinstance(x1, int) and isinstance(pt2, Point)): # TODO: isinstance
+        #    raise ValueError
         self.pt1 = Point(x1, y1)
         self.pt2 = Point(x2, y2)
    
     @staticmethod
     def from_points(self, pt1, pt2):
+        if not (isinstance(pt1, Point) and isinstance(pt2, Point)):
+            raise ValueError
         return Point(pt1.x, pt1.y, pt2.x, pt2.y) 
 
-    def __str__(self):         
+    def __str__(self):
         return "["  + str(self.pt1) + ", " +  str(self.pt2) +  "]"
 
-    def __repr__(self):        
+    def __repr__(self):
         return "Rectangle(" +  str(self.pt1.x) +  ", " +  str(self.pt1.y) + \
                 ", " +  str(self.pt2.x) +  ", " +  str(self.pt2.y) +  ")"
 
-    def __eq__(self, other):   
+    def __eq__(self, other):
         return self.pt1 == other.pt1 and self.pt2 == other.pt2
 
-    def __ne__(self, other):        
+    def __ne__(self, other):
         return not self == other
 
-    def center(self):          
+    def center(self):
         return Point((self.pt1.x + self.pt2.x)/2, (self.pt1.y + self.pt2.y)/2)
 
-    def area(self):            
+    def area(self):
         return (self.pt2.x - self.pt1.x) * (self.pt2.y - self.pt1.y)
 
     def move(self, x, y):      
@@ -58,8 +63,10 @@ class Rectangle:
 
     def make4(self): # todo: bardzo testy
         center = self.center()
-        return [Rectangle.from_points(self.pt1, center), Rectangle(center.x, self.pt1.y, self.pt2.x, center.y),
-                Rectangle.from_points(center, self.pt2), Rectangle(self.pt1.x, center.x, center.y, self.pt2.y)]
+        return [Rectangle.from_points(self.pt1, center),
+                Rectangle(center.x, self.pt1.y, self.pt2.x, center.y),
+                Rectangle.from_points(center, self.pt2),
+                Rectangle(self.pt1.x, center.x, center.y, self.pt2.y)]
 
 
 
@@ -121,10 +128,20 @@ class TestRectangle(unittest.TestCase):
         self.assertTrue(self.r7 == Rectangle(10.75, 3.15, 17, 10.25))
     
     def test_intersection(self):
-        print(self.r2.intersection(self.r3))
-        print(self.r5.intersection(self.r6))
-        print(self.r4.intersection(self.r7))
+        self.assertEqual(self.r2.intersection(self.r3), Rectangle(1, 1, 2, 2))
+        self.assertEqual(self.r5.intersection(self.r6), Rectangle(-5, -4, 0, 0))
+        self.assertEqual(self.r4.intersection(self.r7), Rectangle(2.25, 3.15, 4, 4))
     
+    def test_cover(self):
+        self.assertEqual(self.r2.cover(self.r3), Rectangle(1, 1, 2, 2))
+        self.assertEqual(self.r5.cover(self.r6), Rectangle(-5, -4, 0, 0))
+        self.assertEqual(self.r4.cover(self.r7), Rectangle(2.25, 3.15, 4, 4))
+
+    def test_make4(self):
+        self.assertEqual(self.r2.make4(), Rectangle(1, 1, 2, 2))
+        self.assertEqual(self.r5.make4(), Rectangle(-5, -4, 0, 0))
+        self.assertEqual(self.r4.make4(), Rectangle(2.25, 3.15, 4, 4))
+
     def tearDown(self): pass
 
 if __name__ == '__main__':

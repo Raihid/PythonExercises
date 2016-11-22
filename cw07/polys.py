@@ -87,44 +87,44 @@ class Poly:
         return str(self.a)
 
     def __add__(self, other): # self + other
-        if isinstance(other, (int, long, float))
+        if isinstance(other, (int, long, float)):
             out = self.a
             out.a[0] += other
             return out
-        elif isinstance(other, Poly)
+        elif isinstance(other, Poly):
             return Poly.from_list(self.add_list(self.a, other.a))
-        else
+        else:
             raise ValueError
 
     __radd__ = __add__
 
     def __sub__(self, other):  # self - other
-        if isinstance(other, (int, long, float))
+        if isinstance(other, (int, long, float)):
             out = self.a
             out.a[0] -= other
             return out
-        elif isinstance(other, Poly)
+        elif isinstance(other, Poly):
             return Poly.from_list(self.sub_list(self.a, other.a))
-        else
+        else:
             raise ValueError
 
     def __rsub__(self, other):  # int-poly
-        if isinstance(other, (int, long, float))
+        if isinstance(other, (int, long, float)):
             out = -self.a
             out.a[0] += other
             return out
-        elif isinstance(other, Poly)
+        elif isinstance(other, Poly):
             return Poly.from_list(self.sub_list(self.a, other.a))
-        else
+        else:
             raise ValueError
 
     def __mul__(self, other):  # self * other
-        if isinstance(other, (int, long, float))
+        if isinstance(other, (int, long, float)):
             out = [element * other for element in self.a]
             return out
-        elif isinstance(other, Poly)
+        elif isinstance(other, Poly):
             return Poly.from_list(self.mul_list(self.a, other.a))
-        else
+        else:
             raise ValueError
 
     __rmul__ = __mul__
@@ -163,25 +163,25 @@ class Poly:
         return len(self.a)
 
     def __getitem__(self, i):
-        try
+        try:
             return self.a[i]
-        except
+        except:
             raise ValueError
 
     def __setitem__(self, i, value):
-        if not isinstance(value, (int, long, float))
+        if not isinstance(value, (int, long, float)):
             raise ValueError
-        try
+        try:
             self.a[i] = value
-        except
+        except:
             raise ValueError
 
     def __call__(self, x):
-        if isinstance(x, (int, long, float))
+        if isinstance(x, (int, long, float)):
             return self.eval(x)
-        elif isinstance(x, Poly)
+        elif isinstance(x, Poly):
             return self.combine(x)
-        else
+        else:
             raise ValueError
     
 
@@ -196,7 +196,7 @@ p7 = [4,5,6]
 
 import unittest
 
-class TestPolynomials(unittest.TestCase):
+class TestPolynomials(unittest.TestCase): # TODO: More tests!!
 
     def setUp(self):
         self.p1 = Poly.from_list([2, 1])                   # W(x) = 2 + x
