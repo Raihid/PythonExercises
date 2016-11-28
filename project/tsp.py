@@ -11,8 +11,9 @@ def _validate_towns(towns):
     if len(town_set) < 2:
         return False
     for itself, town in towns.items():
-        if (set(town.keys()) != (town_set - set([itself]))
-           or not all(distance >= 0 for distance in town.values())):
+        if (not isinstance(town, dict) or
+           set(town.keys()) != (town_set - set([itself])) or
+           not all(distance >= 0 for distance in town.values())):
             return False
     return True
 
