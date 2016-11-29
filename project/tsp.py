@@ -1,8 +1,9 @@
 #!/usr/bin/python
 import unittest
+import Gnuplot, Gnuplot.funcutils
 from random import randint
+from math import sqrt
 GEN_TOWN_NUM = 6
-
 
 def _validate_towns(towns):
     if not isinstance(towns, dict):
@@ -18,11 +19,36 @@ def _validate_towns(towns):
     return True
 
 
+def _generate_euclidean_towns(num):
+    towns = {}
+    points = [0] * num
+    for idx in range(0, num):
+        points[idx] = (randint(0, 1000), randint(0, 1000))
+    for idx, point in enumerate(points): 
+        towns[idx] = {}
+        for jdx, neighbor in enumerate(points):
+            if idx == jdx:
+                continue
+            towns[idx][jdx] = sqrt((point[0] - neighbor[0])**2 + (point[1] - neighbor[1])**2)
+    return {"towns": towns, "points": points}
+          
+        
+
 def _generate_towns(num):
     towns = {}
     for i in range(0, num):
         towns[i] = {j: randint(0, 99) for j in range(0, num) if j != i}
     return towns
+
+def _plot(route, points, title):
+    out_points = []
+    for stop in route:
+        out_points += [points[stop]]
+    d = [Gnuplot.Data(out_points,
+                     title=title,
+                     with_='lines')]
+    return d
+    
 
 
 class BruteSolution:
@@ -70,6 +96,22 @@ class NearestNeighbor:
             cost += target[1]
         return route, cost + self.towns[route[-1]][route[0]]
 
+# gnuplot
+
+g = Gnuplot.Gnuplot(debug=1)
+euc = _generate_euclidean_towns(5)
+bs1 = BruteSolution(euc["towns"])
+nn1 = NearestNeighbor(euc["towns"])
+route, cost = nn1.solve()
+nn_data = _plot(route, euc["points"], "nearest neighbor")
+route, cost = bs1.solve()
+bs_data = _plot(route, euc["points"], "brute solution")
+print(bs_data)
+d = [Gnuplot.Data(out_points,
+                 title=title,
+                 with_='lines')]
+g.plot(nn_data, bs_data, )
+raw_input("--- Press enter ---")
 
 class TestPoint(unittest.TestCase):
 
@@ -83,6 +125,7 @@ class TestPoint(unittest.TestCase):
         self.gen3 = _generate_towns(7)
         self.gen4 = _generate_towns(30)
         self.gen5 = _generate_towns(50)
+        self.euc1 = _generate_euclidean_towns(10)
 
     def test_validation(self):
         self.assertTrue(_validate_towns(self.t1))
@@ -96,6 +139,7 @@ class TestPoint(unittest.TestCase):
         self.assertTrue(_validate_towns(self.gen3))
         self.assertTrue(_validate_towns(self.gen4))
         self.assertTrue(_validate_towns(self.gen5))
+        self.assertTrue(_validate_towns(self.euc1["towns"]))
 
     def test_brute_precoded(self):
         # Pre-coded towns
@@ -121,8 +165,17 @@ class TestPoint(unittest.TestCase):
         nn3 = NearestNeighbor(self.gen3)
         self.assertLessEqual(bs3.solve()[1], nn3.solve()[1])
 
+    def test_euclidean(self):
+        bs1 = BruteSolution(self.euc1["towns"])
+        nn1 = NearestNeighbor(self.euc1["towns"])
+        route, cost = nn1.solve()
+        _plot(route, self.euc1["points"])
+
     def tearDown(self): pass
 
 
 if __name__ == "__main__":
     unittest.main()
+
+
+
