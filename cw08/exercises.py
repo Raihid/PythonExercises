@@ -16,19 +16,22 @@ def solve1(a, b, c):
         print("x = " + str(x))
     elif a == 0:
         y = -c/b
-        print("x = " + str(y))
+        print("y = " + str(y))
     else:
         coeff_b = -(b*1.0/a)
         coeff_c = -(c*1.0/a)
         solution = "x = " + str(coeff_b) + "*y"
         if c != 0:
-            solution += " + " if c > 0 else " - "
+            solution += " + " if coeff_c > 0 else " - "
             solution += str(abs(coeff_c))
         print(solution)
 
 
-solve1(1, 1, 0)
-solve1(2, 2, 0)
+solve1(8, 2, 2)
+solve1(5, 1, 0)
+solve1(0, 2, 0)
+solve1(0, 0, 0)
+solve1(0, 0, 5)
 
 
 # ----- Exercise 2 -----
@@ -36,18 +39,18 @@ def solve2(a, b, c):
     delta = sqrt(b*b - 4*a*c)
     if a == 0:
         solve1(0, b, c)
-        return
-
-    if delta == 0:
-        return -b/(2.0*a)
+    elif delta == 0:
+        print("Solution is " + str(-b/(2.0*a)))
     elif delta > 0:
-        return [(-b-delta)/(2.0*a), (-b+delta)/(2.0*a)]
+        print("Solutions are " + str([(-b-delta)/(2.0*a), (-b+delta)/(2.0*a)]))
     else:
-        return None
+        print("No real number solutions")
 
 
-print(solve2(0, 5, 3))
-print(solve2(1, 5, 3))
+solve2(0, 5, 3)
+solve2(1, 5, 3)
+solve2(2, 4, 2)
+
 
 # ----- Exercise 3 -----
 def calc_pi(n=100):
@@ -71,7 +74,13 @@ def heron(a, b, c):
     s = (a+b+c)/2.0
     return sqrt(s*(s-a)*(s-b)*(s-c))
 
-print(heron(6, 6, 6))
+print(heron(5, 5, 5))
+print(heron(7, 10, 5))
+print(heron(6, 12, 6))
+try:
+    print(heron(6, 12.5, 6))
+except ValueError:
+    print("Triangle inequality works")
 
 
 # ----- Exercise 5 -----
@@ -93,15 +102,23 @@ def ackermann(n, p):
 
 def examine_ackermann():
     results = {}
-    for p in range(1, 3):
+    for p in range(1, 5):
         results[p] = {}
-        for n in range(1, 5):
-            results[p][n] = ackermann(n, p)
-    print(results)
+        for n in range(1, 15):
+            try:
+                results[p][n] = ackermann(n, p)
+            except RecursionError:
+                break
+    return results
 
-
-print("Ackermann!!!")
-examine_ackermann()
+print("----- Ackermann -----\nBlack spaces mean max recursion exceeded")
+data = examine_ackermann()
+table = "|".join([str(i).rjust(4) for i in data[1].keys()])
+table = "p\\n|" + table
+for p, row in data.items():
+    table += "\n" + str(p).ljust(3) + "|"
+    table += "|".join(str(item).rjust(4) for key, item in row.items())
+print(table)
 
 
 # ----- Exercise 6 -----
@@ -130,3 +147,8 @@ def recursive_P(i, j):
 
 print(dynamic_P(5, 11))
 print(recursive_P(5, 11))
+
+# By uncommenting these lines we can see, that dynamic version is way, way
+# faster than the recursive one.
+# print(dynamic_P(10, 21))
+# print(recursive_P(10, 21))
