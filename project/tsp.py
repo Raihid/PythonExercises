@@ -211,14 +211,12 @@ def graph_compare(towns, points):
     bs1 = BruteSolution(towns)
     route, cost = bs1.solve()
     bs_data = gnuplotify(route, points, "Brute solution")
-    print("BruteSolution\nCost:" + str(cost) + "\n" + str(route))
+    print("BruteSolution\nCost: " + str(cost) + "\n" + str(route))
 
     nn1 = NearestNeighbor(towns)
     route, cost = nn1.solve()
     nn_data = gnuplotify(route, points, "Nearest neighbor")
-    print("NearestNeighborSolution\nCost:" + str(cost) + "\n" + str(route))
+    print("NearestNeighborSolution\nCost: " + str(cost) + "\n" + str(route))
 
     g.plot(bs_data, nn_data, town_map)
     raw_input("--- Press return ---")
-
-

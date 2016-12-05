@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import tsp
 import unittest
 
@@ -24,7 +25,7 @@ class TestPoint(unittest.TestCase):
         self.euc5 = {}
         self.euc5["points"] = [(100, 100), (200, 150), (250, 320),
                                (322, 828), (555, 355)]
-        self.euc5["towns"] = tsp.calculate_distance(self.euc4["points"])
+        self.euc5["towns"] = tsp.calculate_distance(self.euc5["points"])
 
     def test_validation(self):
         self.assertTrue(tsp.validate_towns(self.t1))
