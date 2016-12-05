@@ -1,12 +1,22 @@
 #!/usr/bin/python
-import unittest
+"""
+This is a module presenting solutions to Travelling Salesman problem.
+It feature functions to generate a map of towns, check its validity, and
+compare solutions. There are two implemented TSP solutions - Brute Solution,
+which checks every possible path, what amounts to really long execution time
+when numer of towns > 10, since it's O(n!). The other solution is Nearest
+Neighbor algorithm, a greedy algorithm, which performs pretty fast (it's
+O(n^2), but doesn't always return the best solutions. This allows us to
+compare fast and unreliable solution with slow and reliable one. We can also
+generate towns on euclidean plane and use gnuplot to show, what path each
+algorithm founds for given map.
+"""
 import Gnuplot
 from random import randint
 from math import sqrt
-GEN_TOWN_NUM = 6
 
 
-def _validate_towns(towns):
+def validate_towns(towns):
     """Check if towns is a correct towns map.
 
     Args:
@@ -28,7 +38,7 @@ def _validate_towns(towns):
     return True
 
 
-def _calculate_distance(points):
+def calculate_distance(points):
     """Return distance between points on an euclidean plane
 
     Args:
@@ -48,7 +58,7 @@ def _calculate_distance(points):
     return towns
 
 
-def _generate_euclidean_towns(num):
+def generate_euclidean_towns(num):
     """Generate valid euclidean towns and a map based on it.
 
     Args:
@@ -60,11 +70,11 @@ def _generate_euclidean_towns(num):
     points = [0] * num
     for idx in range(0, num):
         points[idx] = (randint(0, 500), randint(0, 500))
-    towns = _calculate_distance(points)
+    towns = calculate_distance(points)
     return {"towns": towns, "points": points}
 
 
-def _generate_towns(num):
+def generate_towns(num):
     """Generate a valid map of regular towns (not necessairly euclidean)
 
     Args:
@@ -79,7 +89,7 @@ def _generate_towns(num):
     return towns
 
 
-def _gnuplotify(route, points, title):
+def gnuplotify(route, points, title):
     """Transform towns route and points into gnuplot-readable data
 
     Args:
@@ -113,10 +123,10 @@ class BruteSolution:
         self.visited = {town: False for town in self.towns}
 
     def solve(self):
-        return min((self._recursive(town, town) for town in self.towns),
+        return min((self.recursive(town, town) for town in self.towns),
                    key=lambda item: item[1])
 
-    def _recursive(self, current, start):
+    def recursive(self, current, start):
         """ The function which does all the work of finding the shortest path
         It's really time-expensive and may take a very long time for path
         consisting of more than 10 points.
@@ -139,7 +149,7 @@ class BruteSolution:
 
         best = {"route": [], "cost": -1}
         for target in unvisited:
-            route, cost = self._recursive(target, start)
+            route, cost = self.recursive(target, start)
             cost += self.towns[current][target]
             if cost < best["cost"] or best["cost"] == -1:
                 best["route"], best["cost"] = route, cost
@@ -183,7 +193,7 @@ class NearestNeighbor:
         return route, cost + self.towns[route[-1]][route[0]]
 
 
-def _graph_compare(towns, points):
+def graph_compare(towns, points):
     """Compare Brute and Nearest Neighbor solution for given map of euclidean
     towns. Print out best ways, its' costs and show gnuplot image to visually
     compare paths.
@@ -200,90 +210,15 @@ def _graph_compare(towns, points):
                             with_='labels')
     bs1 = BruteSolution(towns)
     route, cost = bs1.solve()
-    bs_data = _gnuplotify(route, points, "Brute solution")
+    bs_data = gnuplotify(route, points, "Brute solution")
     print("BruteSolution\nCost:" + str(cost) + "\n" + str(route))
 
     nn1 = NearestNeighbor(towns)
     route, cost = nn1.solve()
-    nn_data = _gnuplotify(route, points, "Nearest neighbor")
+    nn_data = gnuplotify(route, points, "Nearest neighbor")
     print("NearestNeighborSolution\nCost:" + str(cost) + "\n" + str(route))
 
     g.plot(bs_data, nn_data, town_map)
     raw_input("--- Press return ---")
 
 
-class TestPoint(unittest.TestCase):
-
-    def setUp(self):
-        self.t1 = {"Krakow": {1: 10}, 1: {"Krakow": 15}}
-        self.t2 = {0: {1: 1, 2: 5}, 1: {0: 1, 2: 2}, 2: {0: 1000, 1: 10}}
-        self.wrong1 = {0: {0: 5, 1: 10}, 1: {0: 7, 1: 20}}
-        self.wrong2 = {0: {1: -1}, 1: {0: 1}}
-        self.gen1 = _generate_towns(5)
-        self.gen2 = _generate_towns(6)
-        self.gen3 = _generate_towns(7)
-        self.gen4 = _generate_towns(30)
-        self.gen5 = _generate_towns(50)
-        self.euc1 = _generate_euclidean_towns(4)
-        self.euc2 = _generate_euclidean_towns(6)
-        self.euc3 = _generate_euclidean_towns(8)
-
-        self.euc4 = {}
-        self.euc4["points"] = [(100, 100), (300, 300), (200, 150), (400, 100)]
-        self.euc4["towns"] = _calculate_distance(self.euc4["points"])
-
-        self.euc5 = {}
-        self.euc5["points"] = [(100, 100), (200, 150), (250, 320),
-                               (322, 828), (555, 355)]
-        self.euc5["towns"] = _calculate_distance(self.euc4["points"])
-
-    def test_validation(self):
-        self.assertTrue(_validate_towns(self.t1))
-        self.assertTrue(_validate_towns(self.t2))
-        self.assertFalse(_validate_towns(self.wrong1))
-        self.assertFalse(_validate_towns(self.wrong2))
-
-    def test_generation(self):
-        self.assertTrue(_validate_towns(self.gen1))
-        self.assertTrue(_validate_towns(self.gen2))
-        self.assertTrue(_validate_towns(self.gen3))
-        self.assertTrue(_validate_towns(self.gen4))
-        self.assertTrue(_validate_towns(self.gen5))
-        self.assertTrue(_validate_towns(self.euc1["towns"]))
-
-    def test_brute_precoded(self):
-        # Pre-coded towns
-        bs1 = BruteSolution(self.t1)
-        nn1 = NearestNeighbor(self.t1)
-        self.assertEqual(bs1.solve(), nn1.solve(1))
-
-        bs2 = BruteSolution(self.t2)
-        nn2 = NearestNeighbor(self.t2)
-        self.assertLessEqual(bs2.solve()[1], nn2.solve()[1])
-
-    def test_brute_gen(self):
-        # Brute should never output worse solution than nearest neighbor
-        bs1 = BruteSolution(self.gen1)
-        nn1 = NearestNeighbor(self.gen1)
-        self.assertLessEqual(bs1.solve()[1], nn1.solve()[1])
-
-        bs2 = BruteSolution(self.gen2)
-        nn2 = NearestNeighbor(self.gen2)
-        self.assertLessEqual(bs2.solve()[1], nn2.solve()[1])
-
-        bs3 = BruteSolution(self.gen3)
-        nn3 = NearestNeighbor(self.gen3)
-        self.assertLessEqual(bs3.solve()[1], nn3.solve()[1])
-
-    def test_euclidean(self):
-        _graph_compare(self.euc1["towns"], self.euc1["points"])
-        _graph_compare(self.euc2["towns"], self.euc2["points"])
-        _graph_compare(self.euc3["towns"], self.euc3["points"])
-        _graph_compare(self.euc4["towns"], self.euc4["points"])
-        _graph_compare(self.euc5["towns"], self.euc5["points"])
-
-    def tearDown(self): pass
-
-
-if __name__ == "__main__":
-    unittest.main()
