@@ -58,7 +58,7 @@ def calc_pi(n=100):
     for i in range(0, n):
         x = random.uniform(0, 1.0)
         y = random.uniform(0, 1.0)
-        if(sqrt(x*x + y*y) <= 1):
+        if x*x + y*y <= 1:
             hit += 1
     return 4.0*hit/n
 
