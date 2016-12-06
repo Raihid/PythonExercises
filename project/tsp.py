@@ -89,7 +89,7 @@ def generate_towns(num):
     return towns
 
 
-def gnuplotify(route, points, title):
+def gnuplotify(route, points, title, width):
     """Transform towns route and points into gnuplot-readable data
 
     Args:
@@ -106,7 +106,7 @@ def gnuplotify(route, points, title):
     out_points += [points[route[0]]]
     d = Gnuplot.Data(out_points,
                      title=title,
-                     with_='lines')
+                     with_='lines lw ' + str(width))
     return d
 
 
@@ -168,7 +168,7 @@ class NearestNeighbor:
         self.towns = towns
 
     def solve(self, start=0):
-        """ The function which does all the work of finding the shortest path.
+        """The function which does all the work of finding the shortest path.
         It's pretty quick - O(n^2), but very often doesn't produce the best
         path.
 
@@ -202,7 +202,10 @@ def graph_compare(towns, points):
         towns: map of towns to visit
         points: list of points on a euclidean plane as (x, y)
     """
-    g = Gnuplot.Gnuplot()
+    g = Gnuplot.Gnuplot(debug=1)
+    g('set xrange ["0": "500"]')
+    g('set yrange ["0": "500"]')
+    g('set format z "%T %g"')
 
     print("Punkty: " + str(points))
     town_map = Gnuplot.Data([(x, y, idx) for (idx, (x, y))
@@ -210,12 +213,12 @@ def graph_compare(towns, points):
                             with_='labels')
     bs1 = BruteSolution(towns)
     route, cost = bs1.solve()
-    bs_data = gnuplotify(route, points, "Brute solution")
+    bs_data = gnuplotify(route, points, "Brute solution", 4)
     print("BruteSolution\nCost: " + str(cost) + "\n" + str(route))
 
     nn1 = NearestNeighbor(towns)
     route, cost = nn1.solve()
-    nn_data = gnuplotify(route, points, "Nearest neighbor")
+    nn_data = gnuplotify(route, points, "Nearest neighbor", 2)
     print("NearestNeighborSolution\nCost: " + str(cost) + "\n" + str(route))
 
     g.plot(bs_data, nn_data, town_map)
