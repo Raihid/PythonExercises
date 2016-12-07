@@ -96,6 +96,7 @@ def gnuplotify(route, points, title, width):
         route: list of points indexes to visit in order
         points: list of points on a euclidean plane as (x, y)
         title: string title for gnuplot plot
+        width: width of lines on the graph
 
     Return:
         Gnuplot.py's PlotItem containing points connected in series of lines
@@ -119,6 +120,9 @@ class BruteSolution:
             were visited.
     """
     def __init__(self, towns):
+        """A simple function to set up the algorithm which will solve our
+        problem.
+        """
         self.towns = towns
         self.visited = {town: False for town in self.towns}
 
@@ -165,6 +169,9 @@ class NearestNeighbor:
         towns: map of towns to visit
     """
     def __init__(self, towns):
+        """A simple function to set up the algorithm which will solve our
+        problem.
+        """
         self.towns = towns
 
     def solve(self, start=0):
@@ -202,15 +209,14 @@ def graph_compare(towns, points):
         towns: map of towns to visit
         points: list of points on a euclidean plane as (x, y)
     """
-    g = Gnuplot.Gnuplot(debug=1)
+    g = Gnuplot.Gnuplot()
     g('set xrange ["0": "500"]')
     g('set yrange ["0": "500"]')
-    g('set format z "%T %g"')
 
     print("Punkty: " + str(points))
-    town_map = Gnuplot.Data([(x, y, idx) for (idx, (x, y))
-                            in enumerate(points)],
-                            with_='labels')
+    for idx, point in enumerate(points, start=1):
+        g("set label {} '{}' at {}, {} front".format(idx, idx,
+                                                     point[0]+5, point[1]+5))
     bs1 = BruteSolution(towns)
     route, cost = bs1.solve()
     bs_data = gnuplotify(route, points, "Brute solution", 4)
@@ -221,5 +227,5 @@ def graph_compare(towns, points):
     nn_data = gnuplotify(route, points, "Nearest neighbor", 2)
     print("NearestNeighborSolution\nCost: " + str(cost) + "\n" + str(route))
 
-    g.plot(bs_data, nn_data, town_map)
+    g.plot(bs_data, nn_data)
     raw_input("--- Press return ---")

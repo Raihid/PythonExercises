@@ -54,7 +54,8 @@ Attributes:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;were&nbsp;visited.<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
-<dl><dt><a name="BruteSolution-__init__"><strong>__init__</strong></a>(self, towns)</dt></dl>
+<dl><dt><a name="BruteSolution-__init__"><strong>__init__</strong></a>(self, towns)</dt><dd><tt>A&nbsp;simple&nbsp;function&nbsp;to&nbsp;set&nbsp;up&nbsp;the&nbsp;algorithm&nbsp;which&nbsp;will&nbsp;solve&nbsp;our<br>
+problem.</tt></dd></dl>
 
 <dl><dt><a name="BruteSolution-recursive"><strong>recursive</strong></a>(self, current, start)</dt><dd><tt>The&nbsp;function&nbsp;which&nbsp;does&nbsp;all&nbsp;the&nbsp;work&nbsp;of&nbsp;finding&nbsp;the&nbsp;shortest&nbsp;path<br>
 It's&nbsp;really&nbsp;time-expensive&nbsp;and&nbsp;may&nbsp;take&nbsp;a&nbsp;very&nbsp;long&nbsp;time&nbsp;for&nbsp;path<br>
@@ -83,7 +84,8 @@ Attributes:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;towns:&nbsp;map&nbsp;of&nbsp;towns&nbsp;to&nbsp;visit<br>&nbsp;</tt></td></tr>
 <tr><td>&nbsp;</td>
 <td width="100%">Methods defined here:<br>
-<dl><dt><a name="NearestNeighbor-__init__"><strong>__init__</strong></a>(self, towns)</dt></dl>
+<dl><dt><a name="NearestNeighbor-__init__"><strong>__init__</strong></a>(self, towns)</dt><dd><tt>A&nbsp;simple&nbsp;function&nbsp;to&nbsp;set&nbsp;up&nbsp;the&nbsp;algorithm&nbsp;which&nbsp;will&nbsp;solve&nbsp;our<br>
+problem.</tt></dd></dl>
 
 <dl><dt><a name="NearestNeighbor-solve"><strong>solve</strong></a>(self, start<font color="#909090">=0</font>)</dt><dd><tt>The&nbsp;function&nbsp;which&nbsp;does&nbsp;all&nbsp;the&nbsp;work&nbsp;of&nbsp;finding&nbsp;the&nbsp;shortest&nbsp;path.<br>
 It's&nbsp;pretty&nbsp;quick&nbsp;-&nbsp;O(n^2),&nbsp;but&nbsp;very&nbsp;often&nbsp;doesn't&nbsp;produce&nbsp;the&nbsp;best<br>
@@ -125,12 +127,13 @@ Args:<br>
 &nbsp;<br>
 Return:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;dictionary-map</tt></dd></dl>
- <dl><dt><a name="-gnuplotify"><strong>gnuplotify</strong></a>(route, points, title)</dt><dd><tt>Transform&nbsp;towns&nbsp;route&nbsp;and&nbsp;points&nbsp;into&nbsp;gnuplot-readable&nbsp;data<br>
+ <dl><dt><a name="-gnuplotify"><strong>gnuplotify</strong></a>(route, points, title, width)</dt><dd><tt>Transform&nbsp;towns&nbsp;route&nbsp;and&nbsp;points&nbsp;into&nbsp;gnuplot-readable&nbsp;data<br>
 &nbsp;<br>
 Args:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;route:&nbsp;list&nbsp;of&nbsp;points&nbsp;indexes&nbsp;to&nbsp;visit&nbsp;in&nbsp;order<br>
 &nbsp;&nbsp;&nbsp;&nbsp;points:&nbsp;list&nbsp;of&nbsp;points&nbsp;on&nbsp;a&nbsp;euclidean&nbsp;plane&nbsp;as&nbsp;(x,&nbsp;y)<br>
 &nbsp;&nbsp;&nbsp;&nbsp;title:&nbsp;string&nbsp;title&nbsp;for&nbsp;gnuplot&nbsp;plot<br>
+&nbsp;&nbsp;&nbsp;&nbsp;width:&nbsp;width&nbsp;of&nbsp;lines&nbsp;on&nbsp;the&nbsp;graph<br>
 &nbsp;<br>
 Return:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;Gnuplot.py's&nbsp;PlotItem&nbsp;containing&nbsp;points&nbsp;connected&nbsp;in&nbsp;series&nbsp;of&nbsp;lines</tt></dd></dl>
@@ -151,12 +154,5 @@ Args:<br>
 &nbsp;<br>
 Return:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;True&nbsp;if&nbsp;this&nbsp;is&nbsp;a&nbsp;correct&nbsp;towns&nbsp;map.</tt></dd></dl>
-</td></tr></table><p>
-<table width="100%" cellspacing=0 cellpadding=2 border=0 summary="section">
-<tr bgcolor="#55aa55">
-<td colspan=3 valign=bottom>&nbsp;<br>
-<font color="#ffffff" face="helvetica, arial"><big><strong>Data</strong></big></font></td></tr>
-    
-<tr><td bgcolor="#55aa55"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><strong>GEN_TOWN_NUM</strong> = 6</td></tr></table>
+</td></tr></table>
 </body></html>
