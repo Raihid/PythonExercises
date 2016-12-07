@@ -17,9 +17,10 @@ def remove_head(node):
     return [node.next, node.data] 
 
 def remove_tail(node): # TODO: pustka
-    if node.next == None:
+    if node is None:
+        raise ValueError("Empty list!")
+    if node.next is None:
         return [None, node.data]
-
     tail = node
     while tail.next.next:
         tail = tail.next
@@ -29,7 +30,7 @@ def remove_tail(node): # TODO: pustka
 
 
 def merge(node1, node2):
-    if not node1:
+    if node1 is None:
         return node2
 
     old_tail = node1
@@ -50,30 +51,37 @@ def find_best(node, current_best, compare):
     return (find_best(node.next, current_best, compare) if node.next
             else current_best)
 
+
+# Simple merge test
 head1 = None
 head2 = None
 head2 = Node(3, head2)
 head2 = Node(2, head2)
 print(merge(head1, head2).str_all())
 
-# TODO: Uporzadkowac wszystko
+# Simple test for find_max, find_min
+head = None
+head = Node(4, head)
+head = Node(3, head)
+head = Node(2, head)
+head = Node(1, head)
 
-# Zastosowanie.
-# pusta lista
-
-# head = Node("front")
-# lista jednoelementowa
-
-# Reczne budowanie dluzszej listy.
-head = None                   # [], pusta lista
-head = Node(3, head)          # [3]
-head = Node(2, head)          # [2, 3]
-head = Node(4, head)          # [4, 2, 3]
 
 print(find_max(head))
 print(find_min(head))
+
+# Simple test for remove_head
+print("Deleting heads")
 while head:
     head, data = remove_head(head)
-    # head, data = remove_tail(head)
-    print "usuwam", data
-head = None
+    print("deleting " + str(data))
+
+# Simple test for remove_tail
+head = Node(1, head)
+head = Node(2, head)
+head = Node(3, head)
+head = Node(4, head)
+print("Deleting tails")
+while head:
+    head, data = remove_tail(head)
+    print("deleting " + str(data))
