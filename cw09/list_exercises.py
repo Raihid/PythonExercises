@@ -7,16 +7,18 @@ class Node:
         self.next = next
 
     def __str__(self):
-        return str(self.data)   # bardzo ogolnie
+        return str(self.data)
 
     def str_all(self):
         rest = ", " + self.next.str_all() if self.next is not None else ""
-        return str(self) + rest 
+        return str(self) + rest
+
 
 def remove_head(node):
-    return [node.next, node.data] 
+    return [node.next, node.data]
 
-def remove_tail(node): # TODO: pustka
+
+def remove_tail(node):
     if node is None:
         raise ValueError("Empty list!")
     if node.next is None:
@@ -24,7 +26,7 @@ def remove_tail(node): # TODO: pustka
     tail = node
     while tail.next.next:
         tail = tail.next
-    data = tail.next.data 
+    data = tail.next.data
     tail.next = None
     return [node, data]
 
@@ -34,17 +36,20 @@ def merge(node1, node2):
         return node2
 
     old_tail = node1
-    while old_tail: 
+    while old_tail:
         old_tail = old_tail.next
     old_tail = node2
     return node1
 
+
 def find_min(head):
     return find_best(head.next, head.data, lambda x, y: x > y)
 
+
 def find_max(head):
     return find_best(head.next, head.data, lambda x, y: x < y)
-    
+
+
 def find_best(node, current_best, compare):
     if compare(current_best, node.data):
         current_best = node.data
