@@ -2,11 +2,12 @@
 import tsp
 import unittest
 
+
 class TestPoint(unittest.TestCase):
 
     def setUp(self):
-        self.t1 = {"Krakow": {1: 10}, 1: {"Krakow": 15}}
-        self.t2 = {0: {1: 1, 2: 5}, 1: {0: 1, 2: 2}, 2: {0: 1000, 1: 10}}
+        self.town1 = {"Krakow": {1: 10}, 1: {"Krakow": 15}}
+        self.town2 = {0: {1: 1, 2: 5}, 1: {0: 1, 2: 2}, 2: {0: 1000, 1: 10}}
         self.wrong1 = {0: {0: 5, 1: 10}, 1: {0: 7, 1: 20}}
         self.wrong2 = {0: {1: -1}, 1: {0: 1}}
         self.gen1 = tsp.generate_towns(5)
@@ -28,8 +29,8 @@ class TestPoint(unittest.TestCase):
         self.euc5["towns"] = tsp.calculate_distance(self.euc5["points"])
 
     def test_validation(self):
-        self.assertTrue(tsp.validate_towns(self.t1))
-        self.assertTrue(tsp.validate_towns(self.t2))
+        self.assertTrue(tsp.validate_towns(self.town1))
+        self.assertTrue(tsp.validate_towns(self.town2))
         self.assertFalse(tsp.validate_towns(self.wrong1))
         self.assertFalse(tsp.validate_towns(self.wrong2))
 
@@ -43,12 +44,12 @@ class TestPoint(unittest.TestCase):
 
     def test_brute_precoded(self):
         # Pre-coded towns
-        bs1 = tsp.BruteSolution(self.t1)
-        nn1 = tsp.NearestNeighbor(self.t1)
+        bs1 = tsp.BruteSolution(self.town1)
+        nn1 = tsp.NearestNeighbor(self.town1)
         self.assertEqual(bs1.solve(), nn1.solve(1))
 
-        bs2 = tsp.BruteSolution(self.t2)
-        nn2 = tsp.NearestNeighbor(self.t2)
+        bs2 = tsp.BruteSolution(self.town2)
+        nn2 = tsp.NearestNeighbor(self.town2)
         self.assertLessEqual(bs2.solve()[1], nn2.solve()[1])
 
     def test_brute_gen(self):

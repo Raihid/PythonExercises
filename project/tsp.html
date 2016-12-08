@@ -11,7 +11,7 @@
 ><td align=right valign=bottom
 ><font color="#ffffff" face="helvetica, arial"><a href=".">index</a><br><a href="file:/home/rahid/Programowanie/Repos/PythonExercises/project/tsp.py">/home/rahid/Programowanie/Repos/PythonExercises/project/tsp.py</a></font></td></tr></table>
     <p><tt>This&nbsp;is&nbsp;a&nbsp;module&nbsp;presenting&nbsp;solutions&nbsp;to&nbsp;Travelling&nbsp;Salesman&nbsp;problem.<br>
-It&nbsp;feature&nbsp;functions&nbsp;to&nbsp;generate&nbsp;a&nbsp;map&nbsp;of&nbsp;towns,&nbsp;check&nbsp;its&nbsp;validity,&nbsp;and<br>
+It&nbsp;features&nbsp;functions&nbsp;to&nbsp;generate&nbsp;a&nbsp;map&nbsp;of&nbsp;towns,&nbsp;check&nbsp;its&nbsp;validity,&nbsp;and<br>
 compare&nbsp;solutions.&nbsp;There&nbsp;are&nbsp;two&nbsp;implemented&nbsp;TSP&nbsp;solutions&nbsp;-&nbsp;Brute&nbsp;Solution,<br>
 which&nbsp;checks&nbsp;every&nbsp;possible&nbsp;path,&nbsp;what&nbsp;amounts&nbsp;to&nbsp;really&nbsp;long&nbsp;execution&nbsp;time<br>
 when&nbsp;numer&nbsp;of&nbsp;towns&nbsp;&gt;&nbsp;10,&nbsp;since&nbsp;it's&nbsp;O(n!).&nbsp;The&nbsp;other&nbsp;solution&nbsp;is&nbsp;Nearest<br>
@@ -106,7 +106,7 @@ Returns:<br>
 <font color="#ffffff" face="helvetica, arial"><big><strong>Functions</strong></big></font></td></tr>
     
 <tr><td bgcolor="#eeaa77"><tt>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</tt></td><td>&nbsp;</td>
-<td width="100%"><dl><dt><a name="-calculate_distance"><strong>calculate_distance</strong></a>(points)</dt><dd><tt>Return&nbsp;distance&nbsp;between&nbsp;points&nbsp;on&nbsp;an&nbsp;euclidean&nbsp;plane<br>
+<td width="100%"><dl><dt><a name="-calculate_distance"><strong>calculate_distance</strong></a>(points)</dt><dd><tt>Return&nbsp;distance&nbsp;between&nbsp;points&nbsp;on&nbsp;an&nbsp;euclidean&nbsp;plane.<br>
 &nbsp;<br>
 Args:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;points:&nbsp;list&nbsp;of&nbsp;points&nbsp;as&nbsp;tuple(x,&nbsp;y).<br>
@@ -120,7 +120,7 @@ Args:<br>
 &nbsp;<br>
 Return:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;A&nbsp;dictionary-map&nbsp;of&nbsp;towns&nbsp;and&nbsp;list&nbsp;of&nbsp;points</tt></dd></dl>
- <dl><dt><a name="-generate_towns"><strong>generate_towns</strong></a>(num)</dt><dd><tt>Generate&nbsp;a&nbsp;valid&nbsp;map&nbsp;of&nbsp;regular&nbsp;towns&nbsp;(not&nbsp;necessairly&nbsp;euclidean)<br>
+ <dl><dt><a name="-generate_towns"><strong>generate_towns</strong></a>(num)</dt><dd><tt>Generate&nbsp;a&nbsp;valid&nbsp;map&nbsp;of&nbsp;regular&nbsp;towns&nbsp;(not&nbsp;necessarily&nbsp;euclidean)<br>
 &nbsp;<br>
 Args:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;num:&nbsp;number&nbsp;of&nbsp;towns&nbsp;to&nbsp;generate<br>
@@ -147,7 +147,8 @@ Attributes:<br>
  <dl><dt><a name="-sqrt"><strong>sqrt</strong></a>(...)</dt><dd><tt><a href="#-sqrt">sqrt</a>(x)<br>
 &nbsp;<br>
 Return&nbsp;the&nbsp;square&nbsp;root&nbsp;of&nbsp;x.</tt></dd></dl>
- <dl><dt><a name="-validate_towns"><strong>validate_towns</strong></a>(towns)</dt><dd><tt>Check&nbsp;if&nbsp;towns&nbsp;is&nbsp;a&nbsp;correct&nbsp;towns&nbsp;map.<br>
+ <dl><dt><a name="-validate_towns"><strong>validate_towns</strong></a>(towns)</dt><dd><tt>Check&nbsp;if&nbsp;towns&nbsp;is&nbsp;a&nbsp;correct&nbsp;towns&nbsp;map&nbsp;in&nbsp;format&nbsp;of<br>
+{from:&nbsp;{to:&nbsp;distance}}<br>
 &nbsp;<br>
 Args:<br>
 &nbsp;&nbsp;&nbsp;&nbsp;towns:&nbsp;dictionary&nbsp;to&nbsp;check.<br>

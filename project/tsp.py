@@ -1,7 +1,7 @@
 #!/usr/bin/python
 """
 This is a module presenting solutions to Travelling Salesman problem.
-It feature functions to generate a map of towns, check its validity, and
+It features functions to generate a map of towns, check its validity, and
 compare solutions. There are two implemented TSP solutions - Brute Solution,
 which checks every possible path, what amounts to really long execution time
 when numer of towns > 10, since it's O(n!). The other solution is Nearest
@@ -11,13 +11,14 @@ compare fast and unreliable solution with slow and reliable one. We can also
 generate towns on euclidean plane and use gnuplot to show, what path each
 algorithm founds for given map.
 """
-import Gnuplot
 from random import randint
 from math import sqrt
+import Gnuplot
 
 
 def validate_towns(towns):
-    """Check if towns is a correct towns map.
+    """Check if towns is a correct towns map in format of
+    {from: {to: distance}}
 
     Args:
         towns: dictionary to check.
@@ -39,7 +40,7 @@ def validate_towns(towns):
 
 
 def calculate_distance(points):
-    """Return distance between points on an euclidean plane
+    """Return distance between points on an euclidean plane.
 
     Args:
         points: list of points as tuple(x, y).
@@ -75,7 +76,7 @@ def generate_euclidean_towns(num):
 
 
 def generate_towns(num):
-    """Generate a valid map of regular towns (not necessairly euclidean)
+    """Generate a valid map of regular towns (not necessarily euclidean)
 
     Args:
         num: number of towns to generate
@@ -105,10 +106,10 @@ def gnuplotify(route, points, title, width):
     for stop in route:
         out_points += [points[stop]]
     out_points += [points[route[0]]]
-    d = Gnuplot.Data(out_points,
-                     title=title,
-                     with_='lines lw ' + str(width))
-    return d
+    data = Gnuplot.Data(out_points,
+                        title=title,
+                        with_='lines lw ' + str(width))
+    return data
 
 
 class BruteSolution:
@@ -131,7 +132,7 @@ class BruteSolution:
                    key=lambda item: item[1])
 
     def recursive(self, current, start):
-        """ The function which does all the work of finding the shortest path
+        """The function which does all the work of finding the shortest path
         It's really time-expensive and may take a very long time for path
         consisting of more than 10 points.
 
@@ -190,7 +191,7 @@ class NearestNeighbor:
         length = len(self.towns)
         route = [start]
         cost = 0
-        for i in range(1, length):
+        for _ in range(1, length):
             target = min(((town, cost) for (town, cost)
                          in self.towns[route[-1]].items()
                          if town not in route),
@@ -209,14 +210,15 @@ def graph_compare(towns, points):
         towns: map of towns to visit
         points: list of points on a euclidean plane as (x, y)
     """
-    g = Gnuplot.Gnuplot()
-    g('set xrange ["0": "500"]')
-    g('set yrange ["0": "500"]')
+    plot_client = Gnuplot.Gnuplot()
+    plot_client('set xrange ["0": "500"]')
+    plot_client('set yrange ["0": "500"]')
 
     print("Punkty: " + str(points))
     for idx, point in enumerate(points, start=1):
-        g("set label {} '{}' at {}, {} front".format(idx, idx,
-                                                     point[0]+5, point[1]+5))
+        plot_client("set label {} '{}' at {}, {} front".format(idx, idx,
+                                                               point[0]+5,
+                                                               point[1]+5))
     bs1 = BruteSolution(towns)
     route, cost = bs1.solve()
     bs_data = gnuplotify(route, points, "Brute solution", 4)
@@ -227,5 +229,5 @@ def graph_compare(towns, points):
     nn_data = gnuplotify(route, points, "Nearest neighbor", 2)
     print("NearestNeighborSolution\nCost: " + str(cost) + "\n" + str(route))
 
-    g.plot(bs_data, nn_data)
+    plot_client.plot(bs_data, nn_data)
     raw_input("--- Press return ---")
