@@ -19,9 +19,9 @@ def count_leafs(top):
             (count_leafs(top.right) if top.right is not None else 0))
 
 
-def count_total(top):
-    return 1 + ((count_total(top.left) if top.left is not None else 0) +
-                (count_total(top.right) if top.right is not None else 0))
+def calc_total(top):
+    return top.data + ((calc_total(top.left) if top.left is not None else 0) +
+                       (calc_total(top.right) if top.right is not None else 0))
 
 
 top = Node(1)
@@ -33,4 +33,4 @@ top.right.left = Node(5)
 
 
 print(count_leafs(top))
-print(count_total(top))
+print(calc_total(top))

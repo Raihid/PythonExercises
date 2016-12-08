@@ -14,7 +14,10 @@ class Node:
         return str(self) + rest
 
 
+# Exercise 9.1
 def remove_head(node):
+    if node is None:
+        raise ValueError("Empty list!")
     return [node.next, node.data]
 
 
@@ -31,23 +34,29 @@ def remove_tail(node):
     return [node, data]
 
 
+# Exercise 9.2
 def merge(node1, node2):
     if node1 is None:
         return node2
 
     old_tail = node1
-    while old_tail:
+    while old_tail.next:
         old_tail = old_tail.next
-    old_tail = node2
+    old_tail.next = node2
     return node1
 
 
+# Exercise 9.3
 def find_min(head):
-    return find_best(head.next, head.data, lambda x, y: x > y)
+    if head is None:
+        raise ValueError("Empty list!")
+    return find_best(head, head.data, lambda x, y: x > y)
 
 
 def find_max(head):
-    return find_best(head.next, head.data, lambda x, y: x < y)
+    if head is None:
+        raise ValueError("Empty list!")
+    return find_best(head, head.data, lambda x, y: x < y)
 
 
 def find_best(node, current_best, compare):
@@ -59,6 +68,7 @@ def find_best(node, current_best, compare):
 
 # Simple merge test
 head1 = None
+head1 = Node(1, head1)
 head2 = None
 head2 = Node(3, head2)
 head2 = Node(2, head2)

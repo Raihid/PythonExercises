@@ -8,6 +8,7 @@ class Node:
         return str(self.data)
 
 
+# Exercise 9.6
 class SortedList:
     def __init__(self, *arguments):
         self.length = 0
@@ -46,7 +47,7 @@ class SortedList:
 
     def remove(self):
         if self.is_empty():
-            raise ValueError
+            raise ValueError("Empty list!")
         self.length -= 1
         old_head = self.head
         self.head = self.head.next

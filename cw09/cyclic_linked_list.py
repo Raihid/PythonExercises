@@ -8,6 +8,7 @@ class Node:
         return str(self.data)
 
 
+# Exercise 9.9
 def count_nodes(node):
     if node is None:
         raise ValueError
