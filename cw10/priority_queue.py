@@ -1,4 +1,8 @@
 #!/usr/bin/python
+"""This file must be ran with python 2 since it uses cmp function, not present
+in python 3.
+"""
+import unittest
 
 
 # Exercise 10.5, Exercise 10.7
@@ -17,9 +21,11 @@ class PriorityQueuePythonic:
         self.items.append(item)
 
     def remove(self):
+        if self.is_empty():
+            raise ValueError("Queue is empty!")
         maxi = 0
         for i in range(1, len(self.items)):
-            if cmpfunc(self.items[i], self.items[maxi]) == 1:
+            if self.cmpfunc(self.items[i], self.items[maxi]) == 1:
                 maxi = i
         self.items[maxi], self.items[-1] = self.items[-1], self.items[maxi]
         return self.items.pop()
@@ -58,4 +64,34 @@ class PriorityQueueAsArray:
         return data
 
 
-# TODO: Testy 
+class PriorityQueueTest(unittest.TestCase):
+
+    def setUp(self):
+        self.pq1 = PriorityQueuePythonic()
+        self.pq2 = PriorityQueueAsArray(10)
+        self.pq3 = PriorityQueuePythonic(cmpfunc=lambda x, y:
+                                         cmp(abs(x), abs(y)))
+
+    def test_exceptions(self):
+        with self.assertRaises(ValueError):
+            self.pq1.remove()
+        with self.assertRaises(ValueError):
+            self.pq2.remove()
+        for i in range(10):
+            self.pq2.insert(i)
+        with self.assertRaises(ValueError):
+            self.pq2.insert(5)
+
+    def test_cmp(self):
+        for i in range(-11, 0, 2):
+            self.pq3.insert(i)
+        for i in range(0, 11, 2):
+            self.pq3.insert(i)
+        self.assertEqual(self.pq3.remove(), -11)
+        self.assertEqual(self.pq3.remove(), 10)
+        self.assertEqual(self.pq3.remove(), -9)
+        self.assertEqual(self.pq3.remove(), 8)
+        self.assertEqual(self.pq3.remove(), -7)
+
+if __name__ == '__main__':
+    unittest.main()
