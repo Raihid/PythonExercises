@@ -1,0 +1,11 @@
+#!/usr/bin/python
+
+
+def list_nodes(graph):
+
+
+def list_edges(graph): pass
+
+def count_nodes(graph): pass
+
+def count_edges(graph): pass
