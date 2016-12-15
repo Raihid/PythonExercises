@@ -5,21 +5,21 @@ from random import randint
 class RandomQueue:
 
     def __init__(self):
-        self.items = []
+        self._items = []
 
     def insert(self, item):
-        self.items.append(item)  # O(1)
+        self._items.append(item)  # O(1)
 
     def remove(self):
         if self.is_empty():
             raise ValueError("Queue is empty!")
-        size = len(self.items)
+        size = len(self._items)
         out = randint(0, size-1)
-        self.items[out], self.items[-1] = self.items[-1], self.items[out]
-        return self.items.pop()  # O(1)
+        self._items[out], self._items[-1] = self._items[-1], self._items[out]
+        return self._items.pop()  # O(1)
 
     def is_empty(self):
-        return not self.items
+        return not self._items
 
     def is_full(self):
         return False
