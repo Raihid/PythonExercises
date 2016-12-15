@@ -1,7 +1,13 @@
 import random
+import math
 
 def generate_num(L, n=100, k=10):
-    L = [random.randint(k) for _ in range(n)]
+    L += [random.randint(0, k) for _ in range(n)]
+
+def generate_sorted(L, n=100, k=10):
+    L += [random.randint(0, k)]
+    for i in range(1, n):
+        L += [random.randint(0, k) + L[i-1]]
 
 
 def linear_find_all(haystack, needle):
@@ -9,10 +15,11 @@ def linear_find_all(haystack, needle):
 
 L = []
 generate_num(L)
-linear_find_all(L, random.randint(10))
+print(linear_find_all(L, random.randint(0, 10)))
+
 
 def binary_find_recur(L, left, right, y):
-    if left == right:
+    if right - left <= 1:
         if L[left] == y:
             return left
         else:
@@ -26,14 +33,28 @@ def binary_find_recur(L, left, right, y):
     else:
         return binary_find_recur(L, left, center, y) 
 
+L = []
+generate_sorted(L, 100, 10)
+for k in L:
+    try:
+        binary_find_recur(L, 0, 100, k)
+    except ValueError as ve:
+        print(ve)
 
-def median_sort(L, left, right):  # TODO: Potestować
+def median_sort(L, left, right):
     sorted_list = sorted(L[left:right])
-    center = len(sorted_list/2.0) - 1
+    center = (len(sorted_list) - 1)/2.0
+    print(center)
     if center.is_integer():
-        return sorted_list[center]
-    else
-        return (sorted_list[center.floor()] + sorted_list[center.ceil()])/2
+        return sorted_list[int(center)]
+    else:
+        return (sorted_list[int(center)] + sorted_list[int(center + .5)])/2.0
+
+L = []
+generate_num(L, 30, 20)
+L = [1, 2, 3, 4]
+print(median_sort(L, 0, 4))
+
 
 def mode_sort(L, left, right): # TODO: Czy to dziala?!!
     sorted_list = sorted(L[left:right])
@@ -49,6 +70,8 @@ def mode_sort(L, left, right): # TODO: Czy to dziala?!!
             current["reps"] += 1
     return best
 
+L = [1, 2, 3, 5, 5, 5, 5, 5, 5, 7, 8]
+print(mode_sort(L, 0, len(L)))
 
 def mode_py(L, left, right): # TODO: A czy to dziala?
     reps = {}
@@ -56,10 +79,17 @@ def mode_py(L, left, right): # TODO: A czy to dziala?
         reps[k] = reps.get(k, 0) + 1
     return max(reps.items(), key=lambda tup: tup[1])
 
+L = [1, 2, 3, 5, 5, 5, 5, 5, 5, 7, 8]
+print(mode_py(L, 0, len(L)))
+
 def lider_py(L, left, right):
     reps = {}
     for k in L:
         reps[k] = reps.get(k, 0) + 1
-    potential_leader = max(reps.items(), key=lambda tup: tup[1])
-    return potential_leader if potential_leader["reps"] > (right-left)/2
-           else None
+    leader = max(reps.items(), key=lambda tup: tup[1])
+    return leader if leader[1] > (right-left-1)/2 + 1 else None
+
+L = [1, 2, 3, 5, 5, 5, 5, 5, 5, 5, 7, 8]
+print(len(L))
+print(lider_py(L, 0, len(L)))
+
