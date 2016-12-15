@@ -55,3 +55,11 @@ def mode_py(L, left, right): # TODO: A czy to dziala?
     for k in L:
         reps[k] = reps.get(k, 0) + 1
     return max(reps.items(), key=lambda tup: tup[1])
+
+def lider_py(L, left, right):
+    reps = {}
+    for k in L:
+        reps[k] = reps.get(k, 0) + 1
+    potential_leader = max(reps.items(), key=lambda tup: tup[1])
+    return potential_leader if potential_leader["reps"] > (right-left)/2
+           else None
