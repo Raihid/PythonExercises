@@ -28,7 +28,7 @@ def generate_repeated(num=10, max_val=5):
     return [random.randint(max_val) for _ in range(num)]
 
 
-def cmp(x, y):
+def cmp(x, y):  # Simple fix for Python 3
     if x < y:
         return -1
     else:
@@ -93,27 +93,30 @@ def quicksort(L, left, right, compare=cmp):
 
 # Exercise 11.4
 def test_times(magnitude):
-    algorithms = {"selectsort": selectsort, "insertsort": insertsort,
-                  "bubblesort": bubblesort, "quicksotrt": quicksort}
+    algorithms = {"selectsort": {"call": selectsort, "quick": False},
+                  "insertsort": {"call": insertsort, "quick": False},
+                  "bubblesort": {"call": bubblesort, "quick": False},
+                  "quicksort": {"call": quicksort, "quick": True}}
     data_sizes = [10 ** k for k in range(magnitude)]
     for N in data_sizes:
         print("We're testing for sample N=" + str(N))
         for name, algo in algorithms.items():
+            if N >= 1e5 and not algo["quick"]:
+                continue
             L = generate_shuffled(N)
             t1 = time.time()
-            try:
-                algo(L, 0, N-1)
-            except RecursionError:
-                print(name + ": RecursionError!")
-                continue
+            algo["call"](L, 0, N-1)
             t2 = time.time()
             print(name + ": " + str(t2 - t1))
+        print("--------")
+
+test_times(4)  # Any higher value makes slower sorts go on forever
 
 
 # Exercise 11.5
 def bogosort(L, left, right):
     """An example of ineffective sorting algorithm with time complexity of
-    O((n+1)!).
+    O((n+1)!). It shuffles the array until it is sorted.
     """
     while not all(L[i] <= L[i+1] for i in range(left, right-1)):
         random.shuffle(L)
