@@ -18,10 +18,15 @@ class Matrix:
 
     def __getitem__(self, pair):   # odczyt m[i,j]
         i, j = pair
+        if i >= self.rows or j >= self.cols:
+            raise ValueError("Out of bounds")
         return self.data[i * self.cols + j]
 
     def __setitem__(self, pair, value):   # m[i,j] = value
         i, j = pair
+        i, j = pair
+        if i >= self.rows or j >= self.cols:
+            raise ValueError("Out of bounds")
         self.data[i * self.cols + j] = value
 
     def __add__(self, other):

@@ -99,8 +99,8 @@ def mode_py(L, left, right):
     reps = {}
     for k in L:
         reps[k] = reps.get(k, 0) + 1
-    return max(reps.items(), key=lambda tup: tup[1])
-
+    mode = max(reps.items(), key=lambda tup: tup[1])
+    return {"val": mode[0], "reps": mode[1]}
 print("----- Testing mode_py -----")
 L = [1, 2, 3, 5, 5, 5, 5, 5, 5, 7, 8]
 random.shuffle(L)

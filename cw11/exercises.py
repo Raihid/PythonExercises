@@ -8,22 +8,27 @@ def generate_int(num=10, max_val=20):
     return [random.randint(max_val) for _ in range(num)]
 
 
+# Exercise 11.1a
 def generate_shuffled(num=10):
     return random.sample([i for i in range(num)], num)
 
 
+# Exercise 11.1b
 def generate_almost_sorted(num=10):
     return [i + 3*(random.random() - 0.5) for i in range(num)]
 
 
+# Exercise 11.1c
 def generate_almost_reverse(num=10):
     return reversed(generate_almost_sorted(num))
 
 
+# Exercise 11.1d
 def generate_gauss(num=10):
     return [random.gauss(0, 5) for _ in range(num)]
 
 
+# Exercise 11.1e
 def generate_repeated(num=10, max_val=5):
     return [random.randint(max_val) for _ in range(num)]
 
@@ -39,6 +44,9 @@ def wrapper(func, *args, **kwargs):
     def wrapped():
         return func(*args, **kwargs)
     return wrapped
+
+
+# Exercise 11.2 omitted, because my final project does a lot of gnuplotting.
 
 
 # Exercise 11.3
@@ -101,7 +109,7 @@ def test_times(magnitude):
     for N in data_sizes:
         print("We're testing for sample N=" + str(N))
         for name, algo in algorithms.items():
-            if N >= 1e5 and not algo["quick"]:
+            if N >= 1e5 and not algo["quick"]:  # O(n^2) is taking too long
                 continue
             L = generate_shuffled(N)
             t1 = time.time()
@@ -111,17 +119,25 @@ def test_times(magnitude):
         print("--------")
 
 test_times(4)  # Any higher value makes slower sorts go on forever
+# More values in comparison.txt
 
 
 # Exercise 11.5
 def bogosort(L, left, right):
     """An example of ineffective sorting algorithm with time complexity of
-    O((n+1)!). It shuffles the array until it is sorted.
+    O((n+1)!). It shuffles the array until it is sorted. Because of that even
+    for 10 numbers sorting may take several seconds.
     """
     while not all(L[i] <= L[i+1] for i in range(left, right-1)):
         random.shuffle(L)
 
 L = [1, 3, 2, -2]
-print(L)
+print("Before bogosort" + str(L))
 bogosort(L, 0, 4)
-print(L)
+print("After bogosort" + str(L))
+
+N = 7  # Very slow for higher values
+L = generate_shuffled(N)
+print("Before bogosort" + str(L))
+bogosort(L, 0, N)
+print("After bogosort" + str(L))
