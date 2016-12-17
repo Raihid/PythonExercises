@@ -1,0 +1,38 @@
+We're testing for sample N=1
+bubblesort: 5.00679016113e-06
+insertsort: 4.05311584473e-06
+quicksort: 1.90734863281e-06
+selectsort: 2.14576721191e-06
+--------
+We're testing for sample N=10
+bubblesort: 5.91278076172e-05
+insertsort: 3.19480895996e-05
+quicksort: 4.88758087158e-05
+selectsort: 4.10079956055e-05
+--------
+We're testing for sample N=100
+bubblesort: 0.00559091567993
+insertsort: 0.00131797790527
+quicksort: 0.000563144683838
+selectsort: 0.0016930103302
+--------
+We're testing for sample N=1000
+bubblesort: 0.173555135727
+insertsort: 0.0361850261688
+quicksort: 0.00311589241028
+selectsort: 0.0700039863586
+--------
+We're testing for sample N=10000
+bubblesort: 15.7888140678
+insertsort: 3.85349202156
+quicksort: 0.0388889312744
+selectsort: 6.95366597176
+--------
+We're testing for sample N=100000
+quicksort: 0.541290998459
+--------
+We're testing for sample N=1000000
+quicksort: 6.81551599503
+--------
+[1, 3, 2, -2]
+[-2, 1, 2, 3]
