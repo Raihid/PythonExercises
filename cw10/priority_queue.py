@@ -1,8 +1,14 @@
 #!/usr/bin/python
-"""This file must be ran with python 2 since it uses cmp function, not present
-in python 3.
-"""
 import unittest
+
+
+def cmp(x, y):  # Fix for Python3
+    if x == y:
+        return 0
+    if x > y:
+        return 1
+    else:
+        return -1
 
 
 # Exercise 10.5, Exercise 10.7
