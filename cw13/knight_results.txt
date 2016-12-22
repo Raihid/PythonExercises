@@ -1,8 +1,43 @@
-[False, False, False]
-[False, False, False]
-[False, False, False]
-[False, False, False, False]
-[False, False, False, False]
-[False, False, False, False]
-[False, False, False, False]
-[True, False, True, False, True]
+Searching for 6x6 solutions takes a very long time, so I've decided to include
+results in this file. 
+For time purposes I've only checked half of the board, since the situation on
+the other side will be symmetrical. An even smarter solution could be used - we
+only need to check about an eight of a board, like that:
+
+X o o o o o
+X X o o o o
+X X X o o o
+o o o o o o
+o o o o o o
+o o o o o o
+
+Where X's are fields to be checked, o's can be omitted.
+
+Our program output: 
+[1, 1, 1, 1, 1, 1]
+[1, 1, 1, 1, 1]
+[1, 1, 1, 1]
+[1, 1, 1]
+[1, 1]
+[1]
+
+
+If we were to place these results on a board like before, it would look like this:
+
+X X X X X X 
+X X X X X o
+X X X X o o 
+X X X o o o
+X X o o o o
+X o o o o o
+
+As the knight are symmetrical, we can extrapolate from this data, that all
+starting points for board 6x6 have a solution. 
+
+Example solution for starting point (0, 0).
+01 16 07 26 11 14
+34 25 12 15 06 27
+17 02 33 08 13 10
+32 35 24 21 28 05
+23 18 03 30 09 20
+36 31 22 19 04 29

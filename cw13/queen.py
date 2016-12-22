@@ -1,26 +1,16 @@
 #!/usr/bin/python
+# Exercise 13.2
 
 
 class QueenProblem:
+
     def __init__(self, N):
         self.N = N
-        # x[i] to pozycja hetmana w kolumnie i
         self.x = N * [None]
-
-        # a[j] == True to brak hetmana w wierszu j
         self.a = N * [True]
-
-        # b[k] == True to brak hetmana na przekatnej k [/].
-        # Suma wiersz+kolumna od 0 do (2N-2).
         self.b = (2*N-1) * [True]
-
-        # c[k] == True to brak hetmana na przekatnej k [\].
-        # Roznica wiersz-kolumna od (-N+1) do (N-1).
         self.c = (2*N-1) * [True]
-
         self.solutions = []
-
-
 
     def __str__(self):
         str_board = ""
@@ -35,7 +25,6 @@ class QueenProblem:
                 str_board += "\n"
             str_board += "--" * self.N + "\n"
         return str_board
-
 
     def is_valid(self, w, k):
         return self.a[w] and self.b[w+k] and self.c[w-k]
@@ -68,7 +57,6 @@ class QueenProblem:
         return success
 
 
-
-qp = QueenProblem(5)
+qp = QueenProblem(8)
 qp.try_solving(0)
 print(qp)
