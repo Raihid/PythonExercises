@@ -42,6 +42,7 @@ def save_edges(graph, filename):
         print(out_lines)
         f.write(out_lines)
         f.write("\n")
+    f.close()
 
 
 print("\n----- Testing exercise 14.3 ------")
