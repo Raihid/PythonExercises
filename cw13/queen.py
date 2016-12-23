@@ -47,10 +47,10 @@ class QueenProblem:
             if self.is_valid(w, k):
                 self.save(w, k)
                 if k < (self.N-1):
-                    success = self.try_solving(k+1)
+                    success = self.try_solving(k + 1)
                 else:
                     success = True
-                    self.solutions += [self.x]
+                    self.solutions += [self.x[:]]
                 self.erase(w, k)
 
             w = w + 1

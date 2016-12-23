@@ -68,9 +68,8 @@ class SudokuFinder:
                     self.solutions += [{key: val for key, val in
                                        self.board.items()}]
                     size = len(self.solutions)
-                    if size % 1000 == 0:
+                    if size % 100 == 0:
                         print("We're at {} solutions".format(size))
-                        print(self)
                 else:
                     new_limit = (index if next_num == num else 0)
                     self.try_solving(new_limit, steps + 1)
